@@ -1,2 +1,7 @@
-".vs/" 
-".vs/" 
+# Visual Studio
+.vs/
+*.vsidx
+*.suo
+*.user
+bin/
+obj/
