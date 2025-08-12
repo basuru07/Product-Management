@@ -19,22 +19,23 @@ namespace ProductManagement.Core.Services
             _productRepository = productRepository;
         }
 
+        // get all Products
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _productRepository.GetAllAsync(); // return all products
         }
-
+        // get Products by ID
         public async Task<Product?> GetProductByIdAsync(int id)
         {
             return await _productRepository.GetByIdAsync(id); // return product by ID
         }
-
+        // create the Products
         public async Task<Product> CreateProductAsync(Product product)
         {
             product.CreatedDate = DateTime.Now;
             return await _productRepository.CreateAsync(product); // create the product save the DateTime
         }
-
+        // update the Products
         public async Task<Product> UpdateProductAsync(int id, Product product)
         {
             var existingProduct = await _productRepository.GetByIdAsync(id); // get existing ID
