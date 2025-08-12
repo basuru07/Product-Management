@@ -19,7 +19,6 @@ namespace ProductManagement.Core.Services
             _productRepository = productRepository;
         }
 
-
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _productRepository.GetAllAsync(); // return all products
@@ -34,23 +33,23 @@ namespace ProductManagement.Core.Services
         {
             product.CreatedDate = DateTime.Now;
             return await _productRepository.CreateAsync(product); // create the product save the DateTime
-
         }
 
         public async Task<Product> UpdateProductAsync(int id, Product product)
         {
-            var existingProduct = await _productRepository.GetByIdAsync(id); // get exisitng ID
-            if (existingProduct != null)
+            var existingProduct = await _productRepository.GetByIdAsync(id); // get existing ID
+
+            // FIXED: Changed logic - throw exception when product is NOT found (null)
+            if (existingProduct == null)
             {
-                throw new Exception($"Product with ID {id} not found"); 
+                throw new Exception($"Product with ID {id} not found");
             }
 
             product.Id = id;
-            product.CreatedDate = existingProduct.CreatedDate; // update product ID
-            product.UpdatedDate = DateTime.UtcNow;
+            product.CreatedDate = existingProduct.CreatedDate; // preserve original creation date
+            product.UpdatedDate = DateTime.UtcNow; // set update timestamp
 
             return await _productRepository.UpdateAsync(product);
-
         }
 
         public async Task DeleteProductAsync(int id)
